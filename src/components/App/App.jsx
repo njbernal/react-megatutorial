@@ -5,19 +5,21 @@ import Landing from './../Landing/Landing';
 import Footer from './../Footer/Footer';
 import ChallengeSection from './../ChallengeSection/ChallengeSection';
 
-const TotalTime = 60;
+const TotalTime = 5;
 const ServiceUrl = "http://metaphorpsum.com/paragraphs/1/9";
+const DefaultState = {
+    selectedParagraph: '',
+    timerStarted: false,
+    timeRemaining: TotalTime,
+    words: 0,
+    characters: 0,
+    wpm: 0,
+    testInfo: []
+};
 
 class App extends React.Component {
-    state = {
-        selectedParagraph: 'REMOVE THIS',
-        timerStarted: false,
-        timeRemaining: TotalTime,
-        words: 0,
-        characters: 0,
-        wpm: 0,
-        testInfo: []
-    };
+    state = DefaultState;
+        
 
     typechange = (input) => {
         if (!this.state.timerStarted) this.startTimer();
@@ -85,11 +87,10 @@ class App extends React.Component {
                 clearInterval(timer);
             }
         }, 1000);
-    }
-    
-    componentDidMount () {
+    };
+
+    fetchNewParagraph() {
         fetch(ServiceUrl).then(response => response.text()).then(data => {
-            this.setState( { selectedParagraph: data });
             const selectedParagraphArray = data.split('');
             const testInfo = selectedParagraphArray.map(selectedLetter => {
                 return {
@@ -97,8 +98,20 @@ class App extends React.Component {
                     status: "notAttempted"
                 }
             })
-            this.setState({testInfo})
+            this.setState({ 
+                ...DefaultState, 
+                testInfo, 
+                selectedParagraph: data
+            });
         });
+    }
+    
+    componentDidMount () {
+        this.fetchNewParagraph();
+    };
+    
+    startAgain = (e) => {
+        this.fetchNewParagraph();
     }
 
     render() {
@@ -118,6 +131,7 @@ class App extends React.Component {
                     timerStarted={this.state.timerStarted}
                     testInfo={this.state.testInfo}
                     typeChange={this.typechange}
+                    startAgain={this.startAgain}
                 />
                 { /* Footer */ }   
                 <Footer /> 
