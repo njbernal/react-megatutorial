@@ -5,7 +5,33 @@ import Landing from './../Landing/Landing';
 import Footer from './../Footer/Footer';
 import ChallengeSection from './../ChallengeSection/ChallengeSection';
 
+const TotalTime = 60;
+const ServiceUrl = "http://metaphorpsum.com/paragraphs/1/9";
+
 class App extends React.Component {
+    state = {
+        selectedParagraph: 'REMOVE THIS',
+        timerStarted: false,
+        timeRemaining: TotalTime,
+        words: 0,
+        characters: 0,
+        wpm: 0,
+        testInfo: []
+    };
+    
+    componentDidMount () {
+        //fetch(ServiceUrl).then(response => response.text()).then(data => this.setState( { selectedParagraph: data }));
+        let data = "some sentence here we go";
+        const selectedParagraphArray = data.split('');
+        const testInfo = selectedParagraphArray.map(selectedLetter => {
+            return {
+                testLetter: selectedLetter,
+                status: "notAttempted"
+            }
+        });
+        this.setState({testInfo})
+    }
+
     render() {
         return (
             <div className="app">
@@ -14,7 +40,15 @@ class App extends React.Component {
                 { /* Landing Page */ }    
                 <Landing />
                 { /* Challenge Section */ }    
-                <ChallengeSection />
+                <ChallengeSection 
+                    selectedParagraph={this.state.selectedParagraph} 
+                    words={this.state.words} 
+                    characters={this.state.characters} 
+                    speed={this.state.wpm} 
+                    timeRemaining={this.state.timeRemaining}
+                    timerStarted={this.state.timerStarted}
+                    testInfo={this.state.testInfo}
+                />
                 { /* Footer */ }   
                 <Footer /> 
             </div>
