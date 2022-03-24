@@ -10,3 +10,9 @@
   min-width: 150px;
   font-family: "Press Start 2P", cursive;
 }
+
+.pokemon-selected {
+  height: 120px;
+  width: 120px;
+  padding: 12px;
+}

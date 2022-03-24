@@ -1,0 +1,22 @@
+.poke-card-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 150px;
+  background-color: #f6d743;
+  border-radius: 5px;
+  margin: 10px;
+  align-items: center;
+  cursor: pointer;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 0.25s ease-out;
+}
+
+.poke-card-container:hover {
+  transform: scale(1.05);
+}
+.pokemon-sprite {
+  height: 85px;
+  width: 89px;
+}
